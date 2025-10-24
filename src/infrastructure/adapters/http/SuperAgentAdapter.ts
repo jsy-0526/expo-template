@@ -101,16 +101,6 @@ export class SuperAgentAdapter implements IHttpClient {
 
       return await this.executeResponseInterceptors(httpResponse);
     } catch (err: any) {
-      console.log('============');
-      console.log('Error type:', err.constructor.name);
-      console.log('Error message:', err.message);
-      console.log('Error code:', err.code);
-      console.log('Has response:', !!err.response);
-      console.log('Response status:', err.response?.status);
-      console.log('Response body:', err.response?.body);
-      console.log('Full error:', err);
-      console.log('============');
-
       const httpError: HttpError = {
         message: err.timeout ? "Request timeout" : (err.message || "Request failed"),
         status: err.response?.status || err.status,
