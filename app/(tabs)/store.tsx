@@ -17,7 +17,7 @@ export default function StoreScreen() {
   const [email, setEmail] = useState("");
 
   // Zustand 持久化存储示例
-  const { theme, language, notifications, setTheme, setLanguage, toggleNotifications, loadSettings } = useSettingsStore();
+  const { themeName, colorScheme, language, notifications, setThemeName, setColorScheme, setLanguage, toggleNotifications, loadSettings } = useSettingsStore();
   const [isLoaded, setIsLoaded] = useState(false);
 
   // 加载持久化设置
@@ -128,23 +128,64 @@ export default function StoreScreen() {
               <Text className="text-gray-400 text-center py-4">加载中...</Text>
             ) : (
               <View>
-                {/* 主题设置 */}
+                {/* 主题名称设置 */}
                 <View className="mb-4">
                   <Text className="text-sm font-semibold text-gray-700 mb-2">
-                    主题设置
+                    主题风格
                   </Text>
                   <View className="flex-row gap-2">
                     <TouchableOpacity
                       className={`flex-1 py-3 rounded-lg border-2 ${
-                        theme === "light"
+                        themeName === "default"
                           ? "bg-blue-500 border-blue-500"
                           : "bg-white border-gray-300"
                       }`}
-                      onPress={() => setTheme("light")}
+                      onPress={() => setThemeName("default")}
                     >
                       <Text
                         className={`text-center font-semibold ${
-                          theme === "light" ? "text-white" : "text-gray-700"
+                          themeName === "default" ? "text-white" : "text-gray-700"
+                        }`}
+                      >
+                        💙 蓝色
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      className={`flex-1 py-3 rounded-lg border-2 ${
+                        themeName === "purple"
+                          ? "bg-purple-500 border-purple-500"
+                          : "bg-white border-gray-300"
+                      }`}
+                      onPress={() => setThemeName("purple")}
+                    >
+                      <Text
+                        className={`text-center font-semibold ${
+                          themeName === "purple" ? "text-white" : "text-gray-700"
+                        }`}
+                      >
+                        💜 紫色
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                {/* 深浅模式设置 */}
+                <View className="mb-4">
+                  <Text className="text-sm font-semibold text-gray-700 mb-2">
+                    深浅模式
+                  </Text>
+                  <View className="flex-row gap-2">
+                    <TouchableOpacity
+                      className={`flex-1 py-3 rounded-lg border-2 ${
+                        colorScheme === "light"
+                          ? "bg-blue-500 border-blue-500"
+                          : "bg-white border-gray-300"
+                      }`}
+                      onPress={() => setColorScheme("light")}
+                    >
+                      <Text
+                        className={`text-center font-semibold ${
+                          colorScheme === "light" ? "text-white" : "text-gray-700"
                         }`}
                       >
                         ☀️ 浅色
@@ -152,15 +193,15 @@ export default function StoreScreen() {
                     </TouchableOpacity>
                     <TouchableOpacity
                       className={`flex-1 py-3 rounded-lg border-2 ${
-                        theme === "dark"
+                        colorScheme === "dark"
                           ? "bg-blue-500 border-blue-500"
                           : "bg-white border-gray-300"
                       }`}
-                      onPress={() => setTheme("dark")}
+                      onPress={() => setColorScheme("dark")}
                     >
                       <Text
                         className={`text-center font-semibold ${
-                          theme === "dark" ? "text-white" : "text-gray-700"
+                          colorScheme === "dark" ? "text-white" : "text-gray-700"
                         }`}
                       >
                         🌙 深色
@@ -233,7 +274,7 @@ export default function StoreScreen() {
                     当前持久化状态:
                   </Text>
                   <Text className="text-xs text-gray-700 font-mono">
-                    {JSON.stringify({ theme, language, notifications }, null, 2)}
+                    {JSON.stringify({ themeName, colorScheme, language, notifications }, null, 2)}
                   </Text>
                 </View>
 

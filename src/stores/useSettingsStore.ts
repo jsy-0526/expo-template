@@ -1,25 +1,34 @@
+import type { ColorScheme, ThemeName } from '@/themes';
 import { create } from 'zustand';
 import { storage } from './index';
 import { PERSISTENT_STORAGE_KEYS } from './persistentStorageKeys';
 
 // Settings store with persistence
 interface SettingsState {
-  theme: 'light' | 'dark';
+  themeName: ThemeName;
+  colorScheme: ColorScheme;
   language: string;
   notifications: boolean;
-  setTheme: (theme: 'light' | 'dark') => void;
+  setThemeName: (themeName: ThemeName) => void;
+  setColorScheme: (colorScheme: ColorScheme) => void;
   setLanguage: (language: string) => void;
   toggleNotifications: () => void;
   loadSettings: () => Promise<void>;
 }
 
 export const useSettingsStore = create<SettingsState>((set, get) => ({
-  theme: 'light',
+  themeName: 'default',
+  colorScheme: 'light',
   language: 'en',
   notifications: true,
 
-  setTheme: async (theme) => {
-    set({ theme });
+  setThemeName: async (themeName) => {
+    set({ themeName });
+    await storage.set(PERSISTENT_STORAGE_KEYS.APP_SETTINGS, get());
+  },
+
+  setColorScheme: async (colorScheme) => {
+    set({ colorScheme });
     await storage.set(PERSISTENT_STORAGE_KEYS.APP_SETTINGS, get());
   },
 
@@ -34,7 +43,7 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
   },
 
   loadSettings: async () => {
-    const saved = await storage.get<Omit<SettingsState, 'setTheme' | 'setLanguage' | 'toggleNotifications' | 'loadSettings'>>(PERSISTENT_STORAGE_KEYS.APP_SETTINGS);
+    const saved = await storage.get<Omit<SettingsState, 'setThemeName' | 'setColorScheme' | 'setLanguage' | 'toggleNotifications' | 'loadSettings'>>(PERSISTENT_STORAGE_KEYS.APP_SETTINGS);
     if (saved) {
       set(saved);
     }

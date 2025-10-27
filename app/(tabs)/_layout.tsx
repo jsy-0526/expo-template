@@ -23,6 +23,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="theme-demo"
+        options={{
+          title: 'Theme',
+          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 24 }}>🎨</Text>,
+        }}
+      />
+      <Tabs.Screen
         name="store"
         options={{
           title: 'Store',
