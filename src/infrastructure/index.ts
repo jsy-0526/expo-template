@@ -24,3 +24,7 @@ export { fetcher } from "./fetcher";
 export { asyncStorageCacheProvider } from "./swr/asyncStorageProvider";
 export { createSWRConfig } from "./swr/config";
 
+// i18n
+
+export * from './interfaces';
+

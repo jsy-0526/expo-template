@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { storage } from './index';
+import { PERSISTENT_STORAGE_KEYS } from './persistentStorageKeys';
 
 // Settings store with persistence
 interface SettingsState {
@@ -19,21 +20,21 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
 
   setTheme: async (theme) => {
     set({ theme });
-    await storage.set('app-settings', get());
+    await storage.set(PERSISTENT_STORAGE_KEYS.APP_SETTINGS, get());
   },
 
   setLanguage: async (language) => {
     set({ language });
-    await storage.set('app-settings', get());
+    await storage.set(PERSISTENT_STORAGE_KEYS.APP_SETTINGS, get());
   },
 
   toggleNotifications: async () => {
     set({ notifications: !get().notifications });
-    await storage.set('app-settings', get());
+    await storage.set(PERSISTENT_STORAGE_KEYS.APP_SETTINGS, get());
   },
 
   loadSettings: async () => {
-    const saved = await storage.get<Omit<SettingsState, 'setTheme' | 'setLanguage' | 'toggleNotifications' | 'loadSettings'>>('app-settings');
+    const saved = await storage.get<Omit<SettingsState, 'setTheme' | 'setLanguage' | 'toggleNotifications' | 'loadSettings'>>(PERSISTENT_STORAGE_KEYS.APP_SETTINGS);
     if (saved) {
       set(saved);
     }

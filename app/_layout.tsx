@@ -1,4 +1,5 @@
 import { createSWRConfig } from "@/infrastructure";
+import "@/infrastructure/i18n";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
