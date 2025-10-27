@@ -9,6 +9,11 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Animated, {
+  FadeInDown,
+  FadeInUp,
+  Layout,
+} from "react-native-reanimated";
 
 export default function HomeScreen() {
   const [page, setPage] = useState(1);
@@ -89,14 +94,17 @@ export default function HomeScreen() {
         }
       >
         {/* 标题栏 */}
-        <View className="bg-white px-4 py-4 border-b border-gray-200">
+        <Animated.View
+          entering={FadeInUp.duration(600)}
+          className="bg-white px-4 py-4 border-b border-gray-200"
+        >
           <Text className="text-2xl font-bold text-gray-900">用户列表</Text>
           {pagination && (
             <Text className="text-sm text-gray-500 mt-1">
               共 {pagination.total} 人 · 第 {pagination.page} 页
             </Text>
           )}
-        </View>
+        </Animated.View>
 
         <View className="px-4 py-2">
           {isLoading && page === 1 && (
@@ -114,9 +122,11 @@ export default function HomeScreen() {
             </View>
           )}
 
-          {allUsers.map((user: any) => (
-            <View
+          {allUsers.map((user: any, index: number) => (
+            <Animated.View
               key={user.id}
+              entering={FadeInDown.duration(500).delay(index * 100)}
+              layout={Layout.duration(300)}
               className="bg-white p-4 mb-3 rounded-xl border border-gray-100 shadow-sm active:opacity-80"
             >
               <View className="flex-row items-center">
@@ -141,7 +151,7 @@ export default function HomeScreen() {
                   )}
                 </View>
               </View>
-            </View>
+            </Animated.View>
           ))}
 
           {/* 加载更多指示器 */}

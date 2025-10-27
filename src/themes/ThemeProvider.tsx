@@ -13,23 +13,23 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const { colorScheme, setColorScheme } = useColorScheme();
   const { themeName, colorScheme: storeColorScheme, loadSettings } = useSettingsStore();
 
-  // Load saved settings on mount
+  // load saved settings on mount
   useEffect(() => {
     loadSettings();
   }, []);
 
-  // Sync colorScheme with NativeWind
+  // sync colorScheme with NativeWind
   useEffect(() => {
     if (colorScheme !== storeColorScheme) {
       setColorScheme(storeColorScheme);
     }
   }, [storeColorScheme, colorScheme, setColorScheme]);
 
-  // Ensure we have valid theme values before rendering
+  // ensure we have valid theme values before rendering
   const currentTheme: ThemeName = themeName || 'default';
   const currentColorScheme: ColorScheme = storeColorScheme || 'light';
 
-  // Get theme styles safely
+  // get theme styles safely
   const themeStyles = themes[currentTheme]?.[currentColorScheme] || themes.default.light;
 
   return (
