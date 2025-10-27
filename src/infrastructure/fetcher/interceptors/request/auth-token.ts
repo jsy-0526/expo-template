@@ -1,5 +1,4 @@
 import type { RequestInterceptor } from '../../../interfaces/http/IHttpClient';
-import { PERSISTENT_STORAGE_KEYS } from '../../../../stores/persistentStorageKeys';
 
 // Request interceptor: Inject auth token
 export const authTokenInterceptor: RequestInterceptor = async (config, next) => {

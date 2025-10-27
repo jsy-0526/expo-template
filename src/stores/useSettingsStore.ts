@@ -1,7 +1,7 @@
 import type { ColorScheme, ThemeName } from '@/themes';
 import { create } from 'zustand';
+import { PERSISTENT_STORAGE_KEYS } from '../constants/persistentStorageKeys';
 import { storage } from './index';
-import { PERSISTENT_STORAGE_KEYS } from './persistentStorageKeys';
 
 // Settings store with persistence
 interface SettingsState {
