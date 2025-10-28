@@ -39,6 +39,7 @@
     "expo-system-ui": "~6.0.8",
     "expo-web-browser": "~15.0.8",
     "fast-json-stable-stringify": "^2.1.0",
+    "formik": "^2.4.6",
     "i18next": "^25.6.0",
     "lodash": "^4.17.21",
     "nativewind": "^4.2.1",
@@ -56,6 +57,7 @@
     "superagent": "^10.2.3",
     "swr": "^2.3.6",
     "tamagui": "^1.135.4",
+    "yup": "^1.7.1",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

@@ -12,9 +12,13 @@ export function useTranslation() {
       await persistentStorage.set(LANGUAGE_STORAGE_KEY, lng);
     }
   };
+
+  const getCurrentLanguage = () => i18n.language;
+
   return {
     t,
     i18n,
     changeLanguage,
+    getCurrentLanguage,
   };
 }
