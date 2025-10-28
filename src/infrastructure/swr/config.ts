@@ -1,19 +1,34 @@
-import NetInfo from "@react-native-community/netinfo";
-import { AppState } from "react-native";
+import NetInfo, { type NetInfoState } from "@react-native-community/netinfo";
+import { AppState, type AppStateStatus } from "react-native";
 import type { SWRConfiguration } from "swr";
 import { asyncStorageCacheProvider } from "./asyncStorageProvider";
+
+// maintain global state for network and app visibility
+let networkState: NetInfoState | null = null;
+let appState: AppStateStatus = AppState.currentState;
+
+// initialize network state monitoring
+NetInfo.fetch().then(state => {
+  networkState = state;
+});
+NetInfo.addEventListener(state => {
+  networkState = state;
+});
+
+// initialize app state monitoring
+AppState.addEventListener("change", nextState => {
+  appState = nextState;
+});
 
 export const createSWRConfig: () => SWRConfiguration = () => ({
   provider: asyncStorageCacheProvider,
   isOnline() {
-    // Custom network state detector
-    // TODO
-    return true;
+    // return current network connection status
+    return networkState?.isConnected ?? true;
   },
   isVisible() {
-    // Custom visibility state detector
-    // TODO
-    return true;
+    // return whether app is in foreground
+    return appState === "active";
   },
   shouldRetryOnError: false,
   errorRetryCount: 3,

@@ -22,8 +22,6 @@ export default function RootLayout() {
         <SWRConfig
           value={{
             ...createSWRConfig(),
-            revalidateOnFocus: true,
-            revalidateOnReconnect: true,
           }}
         >
           <Stack>
