@@ -73,7 +73,6 @@
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "prettier-plugin-tailwindcss": "^0.5.11",
-    "system-split-swagger2ts": "file:../system-split-swagger2ts",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.9.2",
     "vitest": "^4.0.3"
