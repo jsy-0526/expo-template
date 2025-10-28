@@ -24,8 +24,6 @@ function FormContent() {
     useForm<FormModel>({
       fields: formFields,
       i18n: t,
-      defaultValues: {
-      },
       onSubmit: async (values) => {
         console.log("Form submitted:", values);
         setSubmittedData(values);
