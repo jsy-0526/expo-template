@@ -13,7 +13,8 @@
     "sv": "node server/index.js",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "gen:api": "node scripts/genApi.mjs"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -58,16 +59,19 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@types/ejs": "^3.1.5",
     "@types/lodash": "^4.17.20",
     "@types/react": "~19.1.0",
     "@types/superagent": "^8.1.9",
     "@vitest/ui": "^4.0.3",
     "babel-plugin-module-resolver": "^5.0.2",
+    "ejs": "^3.1.10",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "prettier-plugin-tailwindcss": "^0.5.11",
+    "system-split-swagger2ts": "file:../system-split-swagger2ts",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.9.2",
     "vitest": "^4.0.3"

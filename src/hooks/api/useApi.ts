@@ -1,40 +1,110 @@
 import useSWR from "swr";
 import { fetcher, type HttpError } from "../../infrastructure";
 
-// mock type
-export interface UseUsersParams {
-  page?: number;
-  limit?: number;
+export interface UseGetCampaignsParams {
+  status?: "active" | "scheduled" | "expired";
+  accessible?: "ib" | "client" | "both";
+  enabled?: boolean;
 }
 
-export function useUsers(params?: UseUsersParams) {
-  return useSWR<any, HttpError>(params ? ["/users", params] : "/users", async () => {
-    const res = await fetcher.get("/users", { params });
-    console.log(res);
-    
+export function useGetCampaigns({ status, accessible, enabled }: UseGetCampaignsParams) {
+  return useSWR<{
+    id?: number;
+    campaignCode?: string;
+    title?: string;
+    description?: string;
+    pictureUrl?: string;
+    accessible?: "ib" | "client" | "both";
+    fromDate?: string;
+    toDate?: string;
+    enabled?: boolean;
+    status?: "active" | "scheduled" | "expired";
+    createdBy?: {
+      id?: number;
+      name?: string;
+      email?: string;
+    };
+  }[], HttpError>(["/api/admin/v1/campaigns", status, accessible, enabled], async () => {
+    const res = await fetcher.get(`/api/admin/v1/campaigns`, { params: { status, accessible, enabled } });
     return res.data;
   });
 }
 
-export interface UseUserParams {
-  userId: string;
-}
-
-export function useUser({ userId }: UseUserParams) {
-  return useSWR<any, HttpError>(userId ? ["/users", userId] : null, async () => {
-    const res = await fetcher.get(`/users/${userId}`);
+export function useCreateCampaign() {
+  return useSWR<{
+  id?: number;
+  campaignCode?: string;
+  title?: string;
+  description?: string;
+  createdBy?: number;
+  createdAt?: string;
+}, HttpError>("/api/admin/v1/campaigns", async () => {
+    const res = await fetcher.post(`/api/admin/v1/campaigns`, {});
     return res.data;
   });
 }
 
-export interface UseUserPostsParams {
-  userId: string;
-  page?: number;
+export interface UseGetCampaignByIdParams {
+  id: string;
 }
 
-export function useUserPosts({ userId, page }: UseUserPostsParams) {
-  return useSWR<any, HttpError>(userId ? ["/users", userId, "posts", page] : null, async () => {
-    const res = await fetcher.post(`/users/${userId}/posts`, { page });
+export function useGetCampaignById({ id }: UseGetCampaignByIdParams) {
+  return useSWR<{
+  id?: number;
+  campaignCode?: string;
+  title?: string;
+  description?: string;
+  pictureUrl?: string;
+  accessible?: "ib" | "client" | "both";
+  defaultFlag?: boolean;
+  fromDate?: string;
+  toDate?: string;
+  enabled?: boolean;
+  isPublic?: boolean;
+  locales?: Record<string, any>;
+  visibleToClients?: number[];
+  createdBy?: {
+    id?: number;
+    name?: string;
+    email?: string;
+    preference?: {
+      avatar?: string;
+    };
+  };
+  createdAt?: string;
+  updatedAt?: string;
+}, HttpError>(id ? ["/api/admin/v1/campaigns/{id}", id] : null, async () => {
+    const res = await fetcher.get(`/api/admin/v1/campaigns/${id}`);
+    return res.data;
+  });
+}
+
+export interface UseDeleteCampaignParams {
+  id: string;
+}
+
+export function useDeleteCampaign({ id }: UseDeleteCampaignParams) {
+  return useSWR<{
+  success?: boolean;
+  id?: number;
+}, HttpError>(id ? ["/api/admin/v1/campaigns/{id}", id] : null, async () => {
+    const res = await fetcher.delete(`/api/admin/v1/campaigns/${id}`, {});
+    return res.data;
+  });
+}
+
+export interface UseUpdateCampaignParams {
+  id: string;
+}
+
+export function useUpdateCampaign({ id }: UseUpdateCampaignParams) {
+  return useSWR<{
+  id?: number;
+  title?: string;
+  description?: string;
+  updatedAt?: string;
+}, HttpError>(id ? ["/api/admin/v1/campaigns/{id}", id] : null, async () => {
+    const res = await fetcher.patch(`/api/admin/v1/campaigns/${id}`, {});
     return res.data;
   });
 }

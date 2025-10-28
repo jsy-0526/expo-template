@@ -1,4 +1,4 @@
-import { useUsers } from "@/hooks/api/useApi";
+import { useGetCampaigns } from "@/hooks/api/useApi";
 import { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -8,36 +8,19 @@ import {
   Text,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import Animated, {
   FadeInDown,
   FadeInUp,
   Layout,
 } from "react-native-reanimated";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const [page, setPage] = useState(1);
   const [allUsers, setAllUsers] = useState<any[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
-  const {
-    data,
-    error: usersError,
-    isLoading,
-    mutate,
-  } = useUsers({ page, limit: 10 });
-
-  // 当数据加载完成时，合并到 allUsers
-  useEffect(() => {
-    if (data?.data) {
-      if (page === 1) {
-        setAllUsers(data.data);
-      } else {
-        setAllUsers((prev) => [...prev, ...data.data]);
-      }
-      setHasMore(data.pagination?.hasMore ?? false);
-    }
-  }, [data, page]);
+  const { data, error: usersError, isLoading, mutate } = useGetCampaigns({});
 
   // 下拉刷新
   const [refreshing, setRefreshing] = useState(false);
@@ -81,7 +64,7 @@ export default function HomeScreen() {
     [loadMore]
   );
 
-  const pagination = data?.pagination;
+  const pagination = { total: 100, page: 1 };
 
   return (
     <SafeAreaView className="flex-1 bg-gray-50" edges={["top"]}>

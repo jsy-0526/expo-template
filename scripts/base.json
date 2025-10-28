@@ -1,0 +1,505 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Admin Management Service",
+    "version": "v1",
+    "description": "Admin api",
+    "contact": { "email": "zhaozhao200295@gmail.com" }
+  },
+  "paths": {
+    "/api/admin/v1/campaigns": {
+      "get": {
+        "tags": ["Campaign"],
+        "summary": "获取活动列表",
+        "description": "获取营销活动列表，支持按状态、可见性和启用状态筛选",
+        "operationId": "getCampaigns",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "活动状态",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["active", "scheduled", "expired"]
+            }
+          },
+          {
+            "name": "accessible",
+            "in": "query",
+            "description": "可见性",
+            "required": false,
+            "schema": { "type": "string", "enum": ["ib", "client", "both"] }
+          },
+          {
+            "name": "enabled",
+            "in": "query",
+            "description": "是否启用",
+            "required": false,
+            "schema": { "type": "boolean" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回活动列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "integer", "description": "活动ID" },
+                      "campaignCode": {
+                        "type": "string",
+                        "description": "活动代码"
+                      },
+                      "title": { "type": "string", "description": "活动标题" },
+                      "description": {
+                        "type": "string",
+                        "description": "活动描述"
+                      },
+                      "pictureUrl": {
+                        "type": "string",
+                        "description": "活动图片URL"
+                      },
+                      "accessible": {
+                        "type": "string",
+                        "enum": ["ib", "client", "both"],
+                        "description": "可见性"
+                      },
+                      "fromDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "开始日期"
+                      },
+                      "toDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "结束日期"
+                      },
+                      "enabled": {
+                        "type": "boolean",
+                        "description": "是否启用"
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": ["active", "scheduled", "expired"],
+                        "description": "活动状态"
+                      },
+                      "createdBy": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "integer" },
+                          "name": { "type": "string" },
+                          "email": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "请求参数错误" },
+          "401": { "description": "未授权" }
+        }
+      },
+      "post": {
+        "tags": ["Campaign"],
+        "summary": "创建新活动",
+        "description": "创建一个新的营销活动",
+        "operationId": "createCampaign",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title", "description", "pictureUrl"],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "description": "活动标题",
+                    "example": "新用户注册奖励活动"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "活动描述",
+                    "example": "注册即送100积分"
+                  },
+                  "pictureUrl": {
+                    "type": "string",
+                    "description": "活动图片URL",
+                    "example": "https://example.com/campaign.jpg"
+                  },
+                  "accessible": {
+                    "type": "string",
+                    "enum": ["ib", "client", "both"],
+                    "default": "both",
+                    "description": "可见性"
+                  },
+                  "defaultFlag": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "是否为默认活动"
+                  },
+                  "fromDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "开始日期 (格式 yyyy-MM-dd 00:00:00)",
+                    "example": "2025-01-01 00:00:00"
+                  },
+                  "toDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "结束日期 (格式 yyyy-MM-dd 00:00:00)",
+                    "example": "2025-12-31 23:59:59"
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "是否启用"
+                  },
+                  "locales": {
+                    "type": "object",
+                    "description": "多语言配置",
+                    "example": {
+                      "en": { "title": "Welcome Bonus" },
+                      "zh": { "title": "欢迎奖励" }
+                    }
+                  },
+                  "isPublic": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "是否公开"
+                  },
+                  "visibleToClients": {
+                    "type": "array",
+                    "items": { "type": "integer" },
+                    "description": "可见的客户ID列表",
+                    "example": [1, 2, 3]
+                  },
+                  "rewardType": {
+                    "type": "string",
+                    "enum": ["credits"],
+                    "default": "credits",
+                    "description": "奖励类型"
+                  },
+                  "recipientType": {
+                    "type": "string",
+                    "enum": ["referrer", "referee", "both"],
+                    "default": "both",
+                    "description": "接收者类型"
+                  },
+                  "referrerAmount": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "邀请人奖励金额/积分",
+                    "example": 100
+                  },
+                  "refereeAmount": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "被邀请人奖励金额/积分",
+                    "example": 50
+                  },
+                  "triggerEvent": {
+                    "type": "string",
+                    "enum": ["register"],
+                    "default": "register",
+                    "description": "触发事件"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功创建活动",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer", "description": "活动ID" },
+                    "campaignCode": {
+                      "type": "string",
+                      "description": "活动代码（自动生成）"
+                    },
+                    "title": { "type": "string", "description": "活动标题" },
+                    "description": {
+                      "type": "string",
+                      "description": "活动描述"
+                    },
+                    "createdBy": {
+                      "type": "integer",
+                      "description": "创建者ID"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "创建时间"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "请求参数错误" },
+          "401": { "description": "未授权" }
+        }
+      }
+    },
+    "/api/admin/v1/campaigns/{id}": {
+      "get": {
+        "tags": ["Campaign"],
+        "summary": "获取活动详情",
+        "description": "根据活动ID获取单个活动的详细信息",
+        "operationId": "getCampaignById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "活动ID",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回活动详情",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer", "description": "活动ID" },
+                    "campaignCode": {
+                      "type": "string",
+                      "description": "活动代码"
+                    },
+                    "title": { "type": "string", "description": "活动标题" },
+                    "description": {
+                      "type": "string",
+                      "description": "活动描述"
+                    },
+                    "pictureUrl": {
+                      "type": "string",
+                      "description": "活动图片URL"
+                    },
+                    "accessible": {
+                      "type": "string",
+                      "enum": ["ib", "client", "both"],
+                      "description": "可见性"
+                    },
+                    "defaultFlag": {
+                      "type": "boolean",
+                      "description": "是否为默认活动"
+                    },
+                    "fromDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "开始日期"
+                    },
+                    "toDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "结束日期"
+                    },
+                    "enabled": { "type": "boolean", "description": "是否启用" },
+                    "isPublic": {
+                      "type": "boolean",
+                      "description": "是否公开"
+                    },
+                    "locales": {
+                      "type": "object",
+                      "description": "多语言配置"
+                    },
+                    "visibleToClients": {
+                      "type": "array",
+                      "items": { "type": "integer" },
+                      "description": "可见的客户ID列表"
+                    },
+                    "createdBy": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "integer", "description": "创建者ID" },
+                        "name": {
+                          "type": "string",
+                          "description": "创建者姓名"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "创建者邮箱"
+                        },
+                        "preference": {
+                          "type": "object",
+                          "properties": {
+                            "avatar": {
+                              "type": "string",
+                              "description": "创建者头像"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "创建时间"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "更新时间"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "请求参数错误" },
+          "401": { "description": "未授权" },
+          "404": { "description": "活动不存在" }
+        }
+      },
+      "patch": {
+        "tags": ["Campaign"],
+        "summary": "更新活动",
+        "description": "更新指定ID的活动信息",
+        "operationId": "updateCampaign",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "活动ID",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "description": "活动标题"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "活动描述"
+                  },
+                  "pictureUrl": {
+                    "type": "string",
+                    "description": "活动图片URL"
+                  },
+                  "accessible": {
+                    "type": "string",
+                    "enum": ["ib", "client", "both"],
+                    "description": "可见性"
+                  },
+                  "defaultFlag": {
+                    "type": "boolean",
+                    "description": "是否为默认活动"
+                  },
+                  "fromDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "开始日期 (格式 yyyy-MM-dd 00:00:00)"
+                  },
+                  "toDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "结束日期 (格式 yyyy-MM-dd 00:00:00)"
+                  },
+                  "enabled": { "type": "boolean", "description": "是否启用" },
+                  "locales": { "type": "object", "description": "多语言配置" },
+                  "isPublic": { "type": "boolean", "description": "是否公开" },
+                  "visibleToClients": {
+                    "type": "array",
+                    "items": { "type": "integer" },
+                    "description": "可见的客户ID列表"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功更新活动",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer", "description": "活动ID" },
+                    "title": { "type": "string", "description": "活动标题" },
+                    "description": {
+                      "type": "string",
+                      "description": "活动描述"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "更新时间"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "请求参数错误（如开始日期晚于结束日期）" },
+          "401": { "description": "未授权" },
+          "404": { "description": "活动不存在" }
+        }
+      },
+      "delete": {
+        "tags": ["Campaign"],
+        "summary": "删除活动",
+        "description": "删除指定ID的活动",
+        "operationId": "deleteCampaign",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "活动ID",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功删除活动",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "删除是否成功"
+                    },
+                    "id": { "type": "integer", "description": "被删除的活动ID" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "请求参数错误" },
+          "401": { "description": "未授权" },
+          "404": { "description": "活动不存在" }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}

@@ -1,0 +1,130 @@
+import useSWR from 'swr'
+<% if (config.importFetcher) { %>
+import { fetcher, type HttpError } from '<%= config.fetcherPath %>'
+<% } %>
+
+/**
+ * ============================= TYPES ======================================
+ *
+ * 自动生成的 TypeScript 类型定义
+ */
+
+<% types.forEach(function(type) { %>
+<% if (type.isEnum) { %>
+/** <%= type.enum.description || type.typeName %> */
+export enum <%= type.typeName %> {
+<% type.enum.enumResult.forEach(function(enumItem) { %>
+  /** <%= enumItem.description %> */
+  <%= enumItem.key %> = <%= enumItem.value %>,
+<% }); %>
+}
+<% } else { %>
+/** <%= type.interface.description || type.typeName %> */
+export interface <%= type.typeName %> {
+<% type.interface.interfaceResult.forEach(function(interfaceItem) { %>
+  /** <%= interfaceItem.description %> */
+  <%= interfaceItem.key %>: <%= interfaceItem.value %>;
+<% }); %>
+}
+<% } %>
+
+<% }); %>
+
+/**
+ * ============================= SWR HOOKS ===================================
+ *
+ * 自动生成的 SWR Hooks
+ * 缓存策略：使用 URL 模板 + 参数对象作为 key
+ *
+ * 格式：[endpoint, { path?, query?, body? }]
+ */
+
+<% apis.forEach(function(api) { %>
+<%
+// 解析参数
+const hasPathParams = api.parameters && api.parameters.includes('path');
+const hasQueryParams = api.parameters && api.parameters.includes('query');
+const hasBodyParams = api.requestBody;
+
+// 生成 Hook 名称
+const hookName = 'use' + api.functionName.charAt(0).toUpperCase() + api.functionName.slice(1);
+
+// 生成参数类型
+let paramsInterface = api.functionName.charAt(0).toUpperCase() + api.functionName.slice(1) + 'Params';
+
+// 判断请求方法
+const isGetMethod = api.method.toUpperCase() === 'GET';
+const isPostMethod = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(api.method.toUpperCase());
+%>
+
+<% if (api.parameters || api.requestBody) { %>
+/** <%= api.functionDescription %> - 请求参数 */
+export interface <%= paramsInterface %> {
+  <%= api.parameters %>
+  <%= api.requestBody %>
+}
+<% } %>
+
+/**
+ * <%= api.functionDescription || api.functionName %>
+ *
+ * @method <%= api.method.toUpperCase() %>
+ * @endpoint <%= api.rowPath %>
+ * @returns Promise<<%= api.responseType %>>
+ */
+export function <%= hookName %>(
+  <% if (api.parameters || api.requestBody) { %>
+  params<% if (!api.parameters.includes('required') && !api.requestBody) { %>?<% } %>: <%= paramsInterface %>,
+  <% } %>
+  options?: {
+    /** 是否自动请求，默认 true */
+    enabled?: boolean;
+    /** SWR 配置 */
+    swrConfig?: any;
+  }
+) {
+  const enabled = options?.enabled !== false;
+
+  <% if (api.parameters || api.requestBody) { %>
+  // 构造缓存 key：[URL模板, { path?, query?, body? }]
+  const key = enabled
+    ? ['<%= api.rowPath %>', {
+        method: '<%= api.method.toUpperCase() %>',
+        <% if (api.parameters) { %>params,<% } %>
+        <% if (api.requestBody) { %>body: params,<% } %>
+      }]
+    : null;
+  <% } else { %>
+  // 无参数的请求，直接使用 URL 作为 key
+  const key = enabled ? '<%= api.rowPath %>' : null;
+  <% } %>
+
+  return useSWR<<%= api.responseType %>, HttpError>(
+    key,
+    async () => {
+      <% if (isGetMethod) { %>
+      const res = await fetcher.get('<%= api.apiUrl %>'<% if (api.parameters && api.parameters.includes('query')) { %>, { params }<% } %>);
+      <% } else if (isPostMethod) { %>
+      const res = await fetcher.<%= api.method.toLowerCase() %>(
+        `<%= api.apiUrl %>`,
+        <%= api.requestData || 'undefined' %>
+      );
+      <% } %>
+      return res.data;
+    },
+    options?.swrConfig
+  );
+}
+
+<% }); %>
+
+/**
+ * ============================= EXPORTS ====================================
+ */
+
+// 导出所有 hooks
+export {
+<% apis.forEach(function(api, index) { %>
+  use<%= api.functionName.charAt(0).toUpperCase() + api.functionName.slice(1) %>,
+<% }); %>
+};

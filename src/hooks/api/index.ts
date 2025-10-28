@@ -1,3 +1,3 @@
 // API hooks
-export { useUsers, useUser, useUserPosts } from './useApi';
+export { useGetCampaigns, useCreateCampaign, useGetCampaignById, useDeleteCampaign, useUpdateCampaign } from './useApi';
 

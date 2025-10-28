@@ -29,7 +29,7 @@ export default function RootLayout() {
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           </Stack>
-          <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+          <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
         </SWRConfig>
       </ThemeProvider>
     </SafeAreaProvider>
