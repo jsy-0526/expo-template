@@ -1,10 +1,10 @@
 import 'i18next';
-import type { II18nTranslation } from '@/infrastructure/interfaces/i18n';
+import type { Translation } from '@/locales/types';
 
 declare module 'i18next' {
   interface CustomTypeOptions {
     resources: {
-      translation: II18nTranslation;
+      translation: Translation;
     };
     defaultNS: 'translation';
   }

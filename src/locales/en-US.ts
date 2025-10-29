@@ -1,7 +1,15 @@
-import type { II18nTranslation } from '@/infrastructure';
+import type { Translation } from './types';
 
-export const enUS: II18nTranslation = {
+export const enUS: Translation = {
   hello: 'Hello',
+
+  // Toast messages
+  'toast.success.title': 'Success',
+  'toast.success.message': 'Operation completed successfully 👋',
+  'toast.error.title': 'Error',
+  'toast.error.message': 'An error occurred ❌',
+  'toast.info.title': 'Info',
+  'toast.info.message': 'This is an info message 💬',
 
   // Form demo fields
   username: 'Username',

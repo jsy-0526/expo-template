@@ -15,5 +15,5 @@ export { SelectField } from './fields/editable/SelectField';
 export { SwitchField } from './fields/editable/SwitchField';
 export { TextField } from './fields/editable/TextField';
 export { TextView } from './fields/readonly/TextView';
-export { FormWrapper } from './fields/warpper/FormWrapper';
+export { FormWrapper } from './fields/wrapper/FormWrapper';
 

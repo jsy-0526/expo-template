@@ -1,7 +1,7 @@
 import { flatten, isNil } from "lodash";
 import React from "react";
 import { Text, View } from "react-native";
-import { FormWrapper } from "./fields/warpper/FormWrapper";
+import { FormWrapper } from "./fields/wrapper/FormWrapper";
 import type {
   BuildFormParams,
   BuildViewParams,

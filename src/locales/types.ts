@@ -1,5 +1,13 @@
-export interface II18nTranslation {
+export interface Translation {
   hello: string;
+
+  // Toast messages
+  'toast.success.title': string;
+  'toast.success.message': string;
+  'toast.error.title': string;
+  'toast.error.message': string;
+  'toast.info.title': string;
+  'toast.info.message': string;
 
   // Form demo fields
   username: string;

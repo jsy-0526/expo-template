@@ -1,7 +1,15 @@
-import type { II18nTranslation } from '@/infrastructure';
+import type { Translation } from './types';
 
-export const zhCN: II18nTranslation = {
+export const zhCN: Translation = {
   hello: '你好',
+
+  // Toast messages
+  'toast.success.title': '成功',
+  'toast.success.message': '操作已成功完成 👋',
+  'toast.error.title': '错误',
+  'toast.error.message': '发生了一个错误 ❌',
+  'toast.info.title': '提示',
+  'toast.info.message': '这是一条信息提示 💬',
 
   // Form demo fields
   username: '用户名',
