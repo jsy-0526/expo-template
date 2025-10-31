@@ -1,10 +1,6 @@
-export { Modal } from './Modal';
-export { ModalAPI, ModalContainer } from './ModalAPI';
-export type {
-  ModalInstance,
-  ModalProps,
-  ModalStaticMethods,
-  ModalType
-} from './types';
-export { useModal } from './useModal';
-export type { UseModalReturn } from './useModal';
+import { Modal as ModalComponent } from './Modal';
+import { ModalProvider, useModal } from './ModalStatic';
+
+export type { ModalInstance, ModalPresentationStyle, ModalProps, ModalType } from './types';
+export { ModalComponent as Modal, ModalProvider, useModal };
+

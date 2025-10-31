@@ -1,8 +1,16 @@
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useState } from 'react';
+import {
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Modal, ModalAPI, useModal } from '@/components/modal';
+import { Modal, useModal } from '@/components/modal';
+import { Sheet, SheetForm, useSheet } from '@/components/sheet';
 import { useBottomSheet, useToast, useTranslation } from '@/hooks/common';
 
 export default function ExploreScreen() {
@@ -10,6 +18,13 @@ export default function ExploreScreen() {
   const toast = useToast();
   const { t } = useTranslation();
   const modal = useModal();
+
+  // Sheet states
+  const pageSheet = useSheet();
+  const formSheet = useSheet();
+
+  // Modal states for fullScreen demo
+  const [fullScreenVisible, setFullScreenVisible] = useState(false);
 
   return (
     <SafeAreaView className="flex-1 bg-gray-50" edges={['top']}>
@@ -66,84 +81,121 @@ export default function ExploreScreen() {
           </TouchableOpacity>
         </View>
 
+        {/* Modal & Sheet Presentation Styles Demo */}
+        <View className="mb-6">
+          <Text className="text-xl font-semibold text-gray-900 mb-3">
+            Modal & Sheet Presentation Styles
+          </Text>
+
+          <TouchableOpacity
+            className="bg-blue-600 rounded-xl p-4 mb-2 active:bg-blue-700"
+            onPress={() => setFullScreenVisible(true)}
+          >
+            <Text className="text-white font-bold text-center">
+              Modal fullScreen
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            className="bg-purple-600 rounded-xl p-4 mb-2 active:bg-purple-700"
+            onPress={pageSheet.open}
+          >
+            <Text className="text-white font-bold text-center">
+              Sheet pageSheet (iOS 卡片)
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            className="bg-indigo-600 rounded-xl p-4 mb-2 active:bg-indigo-700"
+            onPress={formSheet.open}
+          >
+            <Text className="text-white font-bold text-center">
+              SheetForm with Keyboard Avoiding
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            className="bg-pink-600 rounded-xl p-4 mb-2 active:bg-pink-700"
+            onPress={() => {
+              modal.info({
+                title: '信息提示',
+                content: '这是使用 modal.info() 方法调用的对话框'
+              });
+            }}
+          >
+            <Text className="text-white font-bold text-center">
+              modal.info()
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         {/* Modal Demo */}
         <View className="mb-6">
           <Text className="text-xl font-semibold text-gray-900 mb-3">
             Modal 弹窗示例
           </Text>
 
-          {/* Declarative Modal (useModal hook) */}
+          {/* Modal methods */}
           <TouchableOpacity
-            className="bg-purple-600 rounded-xl p-4 mb-2 active:bg-purple-700"
-            onPress={modal.open}
-          >
-            <Text className="text-white font-bold text-center">
-              声明式 Modal (Hook)
-            </Text>
-          </TouchableOpacity>
-
-          {/* Imperative Modal API */}
-          <TouchableOpacity
-            className="bg-indigo-600 rounded-xl p-4 mb-2 active:bg-indigo-700"
+            className="bg-blue-600 rounded-xl p-4 mb-2 active:bg-blue-700"
             onPress={() => {
-              ModalAPI.info({
+              modal.info({
                 title: '信息提示',
-                content: '这是通过 ModalAPI.info() 调用的命令式 Modal',
-                okText: '知道了'
+                content: '这是一个信息提示对话框'
               });
             }}
           >
             <Text className="text-white font-bold text-center">
-              Info Modal (API)
+              modal.info()
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             className="bg-green-600 rounded-xl p-4 mb-2 active:bg-green-700"
             onPress={() => {
-              ModalAPI.success({
+              modal.success({
                 title: '操作成功',
                 content: '数据已成功保存到服务器',
               });
             }}
           >
             <Text className="text-white font-bold text-center">
-              Success Modal (API)
+              modal.success()
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             className="bg-yellow-600 rounded-xl p-4 mb-2 active:bg-yellow-700"
             onPress={() => {
-              ModalAPI.warning({
+              modal.warning({
                 title: '警告',
                 content: '您确定要继续这个操作吗？此操作可能有风险。',
               });
             }}
           >
             <Text className="text-white font-bold text-center">
-              Warning Modal (API)
+              modal.warning()
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             className="bg-red-600 rounded-xl p-4 mb-2 active:bg-red-700"
             onPress={() => {
-              ModalAPI.error({
+              modal.error({
                 title: '错误',
                 content: '网络连接失败，请检查您的网络设置',
               });
             }}
           >
             <Text className="text-white font-bold text-center">
-              Error Modal (API)
+              modal.error()
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             className="bg-gray-700 rounded-xl p-4 active:bg-gray-800"
             onPress={() => {
-              ModalAPI.confirm({
+              modal.confirm({
                 title: '确认删除',
                 content: '删除后数据将无法恢复，确定要删除吗？',
                 okText: '确定删除',
@@ -157,7 +209,7 @@ export default function ExploreScreen() {
             }}
           >
             <Text className="text-white font-bold text-center">
-              Confirm Modal (API)
+              modal.confirm()
             </Text>
           </TouchableOpacity>
         </View>
@@ -254,23 +306,94 @@ export default function ExploreScreen() {
         </BottomSheetView>
       </BottomSheet>
 
-      {/* Declarative Modal */}
+      {/* Full Screen Modal */}
       <Modal
-        {...modal.modalProps}
-        title="声明式 Modal"
-        okText="确定"
-        cancelText="取消"
+        visible={fullScreenVisible}
+        onClose={() => setFullScreenVisible(false)}
+        presentationStyle="fullScreen"
+        title="Full Screen Modal"
       >
         <View className="py-4">
-          <Text className="text-base text-gray-700 mb-3">
-            这是使用 useModal hook 创建的声明式 Modal。
+          <Text className="text-base text-gray-700 mb-4">
+            完全占据整个屏幕，不显示底层内容。
           </Text>
-          <Text className="text-sm text-gray-600 mb-2">特性：</Text>
-          <Text className="text-sm text-gray-600">• 使用 React 组件声明</Text>
-          <Text className="text-sm text-gray-600">• 状态由 hook 管理</Text>
-          <Text className="text-sm text-gray-600">• 支持复杂内容和自定义交互</Text>
+          <View className="bg-blue-100 rounded-lg p-4 mb-4">
+            <Text className="text-blue-800 font-semibold mb-2">特性：</Text>
+            <Text className="text-blue-700">• 全屏显示</Text>
+            <Text className="text-blue-700">• 完全遮挡主页面</Text>
+            <Text className="text-blue-700">• iOS 和 Android 都支持</Text>
+            <Text className="text-blue-700">• 适合复杂内容展示</Text>
+          </View>
         </View>
       </Modal>
+
+      {/* 2. Sheet pageSheet */}
+      <Sheet
+        {...pageSheet.sheetProps}
+        presentationStyle="pageSheet"
+        title="pageSheet 示例"
+      >
+        <Text className="text-base text-gray-700 mb-4">
+          iOS 卡片样式，支持下拉关闭。这是纯展示内容，不需要键盘避让。
+        </Text>
+        <View className="bg-purple-100 rounded-lg p-4 mb-4">
+          <Text className="text-purple-800 font-semibold mb-2">特性：</Text>
+          <Text className="text-purple-700">• iOS 显示为卡片</Text>
+          <Text className="text-purple-700">• 支持下拉关闭手势</Text>
+          <Text className="text-purple-700">• 底层内容变暗可见</Text>
+        </View>
+      </Sheet>
+
+      {/* 3. SheetForm with Keyboard Avoiding */}
+      <SheetForm
+        {...formSheet.sheetProps}
+        presentationStyle="pageSheet"
+        title="编辑资料"
+        okText="保存"
+        cancelText="取消"
+        onOk={async () => {
+          await new Promise(resolve => setTimeout(resolve, 500));
+          toast.success('保存成功');
+        }}
+      >
+        <View className="mb-4">
+          <Text className="text-sm font-semibold text-gray-700 mb-2">姓名</Text>
+          <TextInput
+            className="border border-gray-300 rounded-lg p-3 text-base"
+            placeholder="请输入姓名"
+            placeholderTextColor="#9CA3AF"
+          />
+        </View>
+
+        <View className="mb-4">
+          <Text className="text-sm font-semibold text-gray-700 mb-2">邮箱</Text>
+          <TextInput
+            className="border border-gray-300 rounded-lg p-3 text-base"
+            placeholder="请输入邮箱"
+            keyboardType="email-address"
+            placeholderTextColor="#9CA3AF"
+          />
+        </View>
+
+        <View className="mb-4">
+          <Text className="text-sm font-semibold text-gray-700 mb-2">备注</Text>
+          <TextInput
+            className="border border-gray-300 rounded-lg p-3 text-base"
+            placeholder="请输入备注"
+            multiline
+            numberOfLines={4}
+            textAlignVertical="top"
+            placeholderTextColor="#9CA3AF"
+          />
+        </View>
+
+        <View className="bg-indigo-100 rounded-lg p-4">
+          <Text className="text-indigo-800 font-semibold mb-2">特性：</Text>
+          <Text className="text-indigo-700">• 内置 KeyboardAvoidingView</Text>
+          <Text className="text-indigo-700">• 自动处理键盘避让</Text>
+          <Text className="text-indigo-700">• 适合表单场景</Text>
+        </View>
+      </SheetForm>
     </SafeAreaView>
   );
 }

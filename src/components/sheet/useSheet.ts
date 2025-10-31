@@ -1,35 +1,38 @@
 import { useCallback, useState } from 'react';
 
-import type { ModalProps } from './types';
+import type { SheetProps } from './types';
 
-export interface UseModalReturn {
+export interface UseSheetReturn {
   // Visibility state
   visible: boolean;
-  // Open modal
+  // Open sheet
   open: () => void;
-  // Close modal
+  // Close sheet
   close: () => void;
-  // Toggle modal
+  // Toggle sheet
   toggle: () => void;
-  // Modal props to spread on Modal component
-  modalProps: {
+  // Sheet props to spread on Sheet component
+  sheetProps: {
     visible: boolean;
     onClose: () => void;
   };
 }
 
-// Hook for declarative modal usage
-// Example:
-// const modal = useModal();
-// return (
-//   <>
-//     <Button onPress={modal.open}>Open Modal</Button>
-//     <Modal {...modal.modalProps} title="My Modal">
-//       <Text>Content</Text>
-//     </Modal>
-//   </>
-// );
-export function useModal(options: { onOpen?: () => void; onClose?: () => void } = {}): UseModalReturn {
+/**
+ * Hook for declarative sheet usage
+ *
+ * @example
+ * const sheet = useSheet();
+ * return (
+ *   <>
+ *     <Button onPress={sheet.open}>Open Sheet</Button>
+ *     <Sheet {...sheet.sheetProps} title="My Sheet">
+ *       <Text>Content</Text>
+ *     </Sheet>
+ *   </>
+ * );
+ */
+export function useSheet(options: { onOpen?: () => void; onClose?: () => void } = {}): UseSheetReturn {
   const { onOpen, onClose } = options;
   const [visible, setVisible] = useState(false);
 
@@ -52,7 +55,7 @@ export function useModal(options: { onOpen?: () => void; onClose?: () => void } 
     open,
     close,
     toggle,
-    modalProps: {
+    sheetProps: {
       visible,
       onClose: close
     }

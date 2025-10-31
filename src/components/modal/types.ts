@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 export type ModalType = 'default' | 'confirm' | 'info' | 'success' | 'warning' | 'error';
+export type ModalPresentationStyle = 'dialog' | 'fullScreen';
 
 export interface ModalProps {
   // Visibility control
@@ -31,6 +32,8 @@ export interface ModalProps {
   closeOnBackdropPress?: boolean;
   // Animation type
   animationType?: 'none' | 'slide' | 'fade';
+  // Presentation style
+  presentationStyle?: ModalPresentationStyle;
   // Modal width (for web/tablet)
   width?: number | string;
   // Z-index
@@ -47,16 +50,14 @@ export interface ModalInstance {
 }
 
 export interface ModalStaticMethods {
-  // Show a basic modal
-  show: (config: ModalProps) => ModalInstance;
   // Show info modal
-  info: (config: Omit<ModalProps, 'type'>) => ModalInstance;
+  info: (config: Omit<ModalProps, 'type' | 'visible'>) => ModalInstance;
   // Show success modal
-  success: (config: Omit<ModalProps, 'type'>) => ModalInstance;
+  success: (config: Omit<ModalProps, 'type' | 'visible'>) => ModalInstance;
   // Show error modal
-  error: (config: Omit<ModalProps, 'type'>) => ModalInstance;
+  error: (config: Omit<ModalProps, 'type' | 'visible'>) => ModalInstance;
   // Show warning modal
-  warning: (config: Omit<ModalProps, 'type'>) => ModalInstance;
+  warning: (config: Omit<ModalProps, 'type' | 'visible'>) => ModalInstance;
   // Show confirm modal
-  confirm: (config: Omit<ModalProps, 'type'>) => ModalInstance;
+  confirm: (config: Omit<ModalProps, 'type' | 'visible'>) => ModalInstance;
 }
