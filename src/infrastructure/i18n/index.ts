@@ -1,10 +1,9 @@
 import { enUS, zhCN } from "@/locales";
-import { storage } from "@/stores";
+import { PERSISTENT_STORAGE_KEYS, storage } from "@/stores";
 import * as Localization from "expo-localization";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
-const LANGUAGE_STORAGE_KEY = "app_language";
 
 const resources = {
   "en-US": { translation: enUS },
@@ -13,7 +12,7 @@ const resources = {
 
 // Initialize i18n with persisted language or device locale
 const initializeI18n = async () => {
-  const savedLanguage = await storage.get<string>(LANGUAGE_STORAGE_KEY);
+  const savedLanguage = await storage.get<string>(PERSISTENT_STORAGE_KEYS.LANGUAGE);
   const deviceLocale = Localization.getLocales()[0]?.languageTag || "en-US";
 
   const initialLanguage = savedLanguage || deviceLocale;

@@ -9,7 +9,10 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import ErrorBoundary from "react-native-error-boundary";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import { SWRConfig } from "swr";
 import "../global.css";
@@ -19,12 +22,12 @@ export const unstable_settings = {
   anchor: "(tabs)",
 };
 
-function ToastWithSafeArea() {
+const ToastWithSafeArea = () => {
   const insets = useSafeAreaInsets();
   return <Toast topOffset={insets.top} />;
-}
+};
 
-function AppContent() {
+const AppContent = () => {
   const colorScheme = useSettingsStore((state) => state.colorScheme);
 
   return (
@@ -43,11 +46,11 @@ function AppContent() {
       </SWRConfig>
     </ThemeProvider>
   );
-}
+};
 
 export default function RootLayout() {
   const handleError = (error: Error, stackTrace: string) => {
-    console.error('Error caught by ErrorBoundary:', error, stackTrace);
+    console.error("Error caught by ErrorBoundary:", error, stackTrace);
   };
 
   return (

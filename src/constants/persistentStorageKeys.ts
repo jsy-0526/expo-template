@@ -1,4 +1,5 @@
 export const PERSISTENT_STORAGE_KEYS = {
-  APP_SETTINGS: 'app-settings',
-  AUTH_TOKEN: 'authToken',
+  LANGUAGE : 'LANGUAGE',
+  APP_SETTINGS: 'APP-SETTINGS',
+  AUTH_TOKEN: 'AUTH_TOKEN',
 } as const

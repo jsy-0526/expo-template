@@ -121,7 +121,7 @@ export default function StoreScreen() {
               💾 持久化存储 (useSettingsStore)
             </Text>
             <Text className="text-sm text-gray-500 mb-4">
-              使用 AsyncStorage 保存，重启应用后依然存在
+              使用 SecureStore 保存，重启应用后依然存在
             </Text>
 
             {!isLoaded ? (

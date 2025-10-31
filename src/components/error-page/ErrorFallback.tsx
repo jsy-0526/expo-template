@@ -5,7 +5,7 @@ interface ErrorFallbackProps {
   resetError: () => void;
 }
 
-export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
+export const ErrorFallback = ({ error, resetError }: ErrorFallbackProps) => {
   return (
     <View className="flex-1 items-center justify-center bg-gray-50 p-6">
       <View className="bg-white rounded-2xl p-6 shadow-lg w-full max-w-md">
@@ -31,4 +31,4 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
       </View>
     </View>
   );
-}
+};

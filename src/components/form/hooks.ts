@@ -10,13 +10,13 @@ import type {
   UseFormViewParams
 } from "./types";
 
-export function useForm<T extends FormikValues = FormValues>({
+export const useForm = <T extends FormikValues = FormValues>({
   fields,
   i18n = (key: string) => key,
   defaultValues = {},
   onSubmit = () => {},
   additionalNames = [],
-}: UseFormParams<T>) {
+}: UseFormParams<T>) => {
   const { factory, formComponents } = useFormContext<T>();
 
   const flatFields = flatten(fields) as FieldConfig<T>[];
@@ -85,15 +85,15 @@ export function useForm<T extends FormikValues = FormValues>({
       }),
     submitDisabled: !formik.isValid || isEmpty(formik.touched),
   };
-}
+};
 
 // readonly mode form hook
-export function useFormView<T = FormValues>({
+export const useFormView = <T = FormValues>({
   fields,
   data,
   i18n = (key: string) => key,
   keepFormat = false,
-}: UseFormViewParams<T>) {
+}: UseFormViewParams<T>) => {
   const { factory } = useFormContext<T>();
 
   if (isNil(fields) || isNil(data)) {
@@ -105,4 +105,4 @@ export function useFormView<T = FormValues>({
   return {
     viewGenerator: () => factory.buildView({ fields, data, i18n, keepFormat }),
   };
-}
+};

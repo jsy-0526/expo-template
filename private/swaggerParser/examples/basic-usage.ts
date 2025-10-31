@@ -1,4 +1,4 @@
-import { SwaggerParser } from '../src';
+import { SwaggerParser } from '../dist';
 
 // Example OpenAPI document
 const openApiDocument = {

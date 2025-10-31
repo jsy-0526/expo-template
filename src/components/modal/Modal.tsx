@@ -27,7 +27,7 @@ const typeColors: Record<string, string> = {
   confirm: "bg-gray-100 border-gray-500",
 };
 
-export function Modal({
+export const Modal = ({
   visible = false,
   onClose,
   type = "default",
@@ -44,7 +44,7 @@ export function Modal({
   animationType = "fade",
   presentationStyle = "dialog",
   children,
-}: ModalProps) {
+}: ModalProps) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -218,4 +218,4 @@ export function Modal({
       </Pressable>
     </RNModal>
   );
-}
+};

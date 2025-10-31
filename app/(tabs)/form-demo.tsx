@@ -9,7 +9,7 @@ import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // 表单内容组件（在 Provider 内部）
-function FormContent() {
+const FormContent = () => {
   const [submittedData, setSubmittedData] = useState<FormModel | null>(
     null
   );
@@ -137,13 +137,13 @@ function FormContent() {
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 // 主组件（包裹 Provider）
-export default function FormDemoScreen() {
+export default () => {
   return (
     <FormProvider>
       <FormContent />
     </FormProvider>
   );
-}
+};

@@ -1,15 +1,14 @@
+import { PERSISTENT_STORAGE_KEYS } from "@/constants";
 import { persistentStorage } from "@/infrastructure/adapters/storage/PersistentStorageAdapter";
 import { useTranslation as useI18nextTranslation } from "react-i18next";
 
-const LANGUAGE_STORAGE_KEY = "app_language";
-
-export function useTranslation() {
+export const useTranslation = () => {
   const { t, i18n } = useI18nextTranslation();
 
   const changeLanguage = async (lng: string, shouldStore = true) => {
     await i18n.changeLanguage(lng);
     if (shouldStore) {
-      await persistentStorage.set(LANGUAGE_STORAGE_KEY, lng);
+      await persistentStorage.set(PERSISTENT_STORAGE_KEYS.LANGUAGE, lng);
     }
   };
 
@@ -21,4 +20,4 @@ export function useTranslation() {
     changeLanguage,
     getCurrentLanguage,
   };
-}
+};

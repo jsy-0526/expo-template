@@ -5,9 +5,9 @@ import type {
   SwitchFieldConfig,
 } from "../../types";
 
-export function SwitchField<T = FormValues>(
+export const SwitchField = <T = FormValues>(
   props: FormComponentProps<T> & SwitchFieldConfig<T>
-) {
+) => {
   const { formik, name, disabled } = props;
 
   const value = Boolean(formik.values[name]);
@@ -28,4 +28,4 @@ export function SwitchField<T = FormValues>(
       />
     </View>
   );
-}
+};

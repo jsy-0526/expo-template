@@ -12,14 +12,14 @@ interface FormWrapperProps<T = FormValues> {
   i18n?: I18nFunction;
 }
 
-export function FormWrapper<T = FormValues>({
+export const FormWrapper = <T = FormValues>({
   formik,
   name,
   label,
   required = false,
   helper,
   children,
-}: FormWrapperProps<T>) {
+}: FormWrapperProps<T>) => {
   // normallize label and required
   const resolvedLabel =
     typeof label === "function" ? label(formik.values) : label;
@@ -55,4 +55,4 @@ export function FormWrapper<T = FormValues>({
       )}
     </View>
   );
-}
+};

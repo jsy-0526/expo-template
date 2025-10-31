@@ -51,9 +51,9 @@ export interface UseBottomSheetReturn {
 //     </BottomSheet>
 //   </>
 // );
-export function useBottomSheet(
+export const useBottomSheet = (
   options: UseBottomSheetOptions = {}
-): UseBottomSheetReturn {
+): UseBottomSheetReturn => {
   const { initialOpen = false, onOpen, onClose, onChange } = options;
 
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -118,4 +118,4 @@ export function useBottomSheet(
     expand,
     collapse
   };
-}
+};

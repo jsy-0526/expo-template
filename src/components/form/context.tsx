@@ -55,12 +55,12 @@ interface FormProviderProps {
 }
 
 // form provider
-export function FormProvider({
+export const FormProvider = ({
   children,
   formComponents = defaultFormComponents,
   viewComponents = defaultViewComponents,
   viewLayoutComponents = ["divider", "title"],
-}: FormProviderProps) {
+}: FormProviderProps) => {
   const factory = new FormFactory(
     viewComponents,
     formComponents,
@@ -75,12 +75,12 @@ export function FormProvider({
   };
 
   return <FormContext.Provider value={value}>{children}</FormContext.Provider>;
-}
+};
 
-export function useFormContext<T = FormValues>(): FormContextValue<T> {
+export const useFormContext = <T = FormValues>(): FormContextValue<T> => {
   const context = useContext(FormContext);
   if (!context) {
     throw new Error("useFormContext must be used within FormProvider");
   }
   return context as FormContextValue<T>;
-}
+};

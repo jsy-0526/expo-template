@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FlatList, Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
 import type { FormComponentProps, FormValues, Option, SelectFieldConfig } from '../../types';
 
-export function SelectField<T = FormValues>(props: FormComponentProps<T> & SelectFieldConfig<T>) {
+export const SelectField = <T = FormValues>(props: FormComponentProps<T> & SelectFieldConfig<T>) => {
   const {
     formik,
     name,
@@ -85,4 +85,4 @@ export function SelectField<T = FormValues>(props: FormComponentProps<T> & Selec
       </Modal>
     </>
   );
-}
+};

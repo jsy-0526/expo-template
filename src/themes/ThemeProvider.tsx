@@ -9,7 +9,7 @@ interface ThemeProviderProps {
   children: ReactNode;
 }
 
-export function ThemeProvider({ children }: ThemeProviderProps) {
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const { colorScheme, setColorScheme } = useColorScheme();
   const { themeName, colorScheme: storeColorScheme, loadSettings } = useSettingsStore();
 
@@ -37,4 +37,4 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       {children}
     </View>
   );
-}
+};

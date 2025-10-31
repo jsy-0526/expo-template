@@ -46,7 +46,7 @@ export interface UseToastReturn {
 // const { t } = useTranslation();
 // toast.success(t('messages.success'));
 // toast.error({ title: t('error'), content: t('messages.error') });
-export function useToast(options: UseToastOptions = {}): UseToastReturn {
+export const useToast = (options: UseToastOptions = {}): UseToastReturn => {
   const {
     defaultConfig = {},
     visibilityTime = 3000,
@@ -119,4 +119,4 @@ export function useToast(options: UseToastOptions = {}): UseToastReturn {
     }),
     [visibilityTime, defaultConfig, defaultTitles]
   );
-}
+};

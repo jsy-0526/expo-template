@@ -5,9 +5,9 @@ import type {
   TextFieldConfig,
 } from "../../types";
 
-export function TextField<T = FormValues>(
+export const TextField = <T = FormValues>(
   props: FormComponentProps<T> & TextFieldConfig<T>
-) {
+) => {
   const {
     formik,
     name,
@@ -43,4 +43,4 @@ export function TextField<T = FormValues>(
       `}
     />
   );
-}
+};

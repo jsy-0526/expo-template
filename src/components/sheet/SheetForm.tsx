@@ -31,7 +31,7 @@ interface SheetFormProps extends SheetProps {
  *   <TextInput placeholder="Email" />
  * </SheetForm>
  */
-export function SheetForm({
+export const SheetForm = ({
   visible = false,
   onClose,
   title,
@@ -47,7 +47,7 @@ export function SheetForm({
   keyboardBehavior = Platform.OS === 'ios' ? 'padding' : undefined,
   keyboardVerticalOffset = 0,
   children
-}: SheetFormProps) {
+}: SheetFormProps) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -163,4 +163,4 @@ export function SheetForm({
       </SafeAreaView>
     </RNModal>
   );
-}
+};

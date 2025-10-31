@@ -1,5 +1,5 @@
-import { RefResolver } from '../src';
-import type { SchemaObject } from '../src';
+import type { SchemaObject } from '../dist';
+import { RefResolver } from '../dist';
 
 console.log('=== $ref Resolution Examples ===\n');
 

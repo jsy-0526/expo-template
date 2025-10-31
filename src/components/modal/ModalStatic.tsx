@@ -9,7 +9,7 @@ import type { ModalInstance, ModalProps } from "./types";
 let modalIdCounter = 0;
 const generateModalId = () => `modal_${Date.now()}_${++modalIdCounter}`;
 
-// Context for modal methods
+// context for modal methods
 interface ModalContextValue {
   info: (config: Omit<ModalProps, "type" | "visible">) => ModalInstance;
   success: (config: Omit<ModalProps, "type" | "visible">) => ModalInstance;
@@ -20,8 +20,8 @@ interface ModalContextValue {
 
 const ModalContext = createContext<ModalContextValue | null>(null);
 
-// Provider component
-export function ModalProvider({ children }: { children: ReactNode }) {
+// provider component
+export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const { addPortal, updatePortal, removePortal } = usePortal();
 
   const createModalInstance = (config: ModalProps): ModalInstance => {
@@ -33,7 +33,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
       removePortal(id);
     };
 
-    // Add modal to portal
+    // add modal to portal
     const renderModal = () => (
       <Modal key={id} {...currentConfig} visible={true} onClose={handleClose} />
     );
@@ -65,10 +65,10 @@ export function ModalProvider({ children }: { children: ReactNode }) {
       <PortalHost name="modal-host" />
     </ModalContext.Provider>
   );
-}
+};
 
-// Hook to access modal context
-export function useModal(): ModalContextValue {
+// hook to access modal context
+export const useModal = (): ModalContextValue => {
   const context = useContext(ModalContext);
   if (!context) {
     throw new Error(
@@ -77,4 +77,4 @@ export function useModal(): ModalContextValue {
     );
   }
   return context;
-}
+};

@@ -32,7 +32,7 @@ export interface UseSheetReturn {
  *   </>
  * );
  */
-export function useSheet(options: { onOpen?: () => void; onClose?: () => void } = {}): UseSheetReturn {
+export const useSheet = (options: { onOpen?: () => void; onClose?: () => void } = {}): UseSheetReturn => {
   const { onOpen, onClose } = options;
   const [visible, setVisible] = useState(false);
 
@@ -60,4 +60,4 @@ export function useSheet(options: { onOpen?: () => void; onClose?: () => void } 
       onClose: close
     }
   };
-}
+};

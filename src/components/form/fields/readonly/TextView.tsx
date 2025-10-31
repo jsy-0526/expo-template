@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native';
 import type { FormValues, ViewComponentProps } from '../../types';
 
-export function TextView<T = FormValues>(props: ViewComponentProps<T>) {
+export const TextView = <T = FormValues>(props: ViewComponentProps<T>) => {
   const { data, name, label, formatter } = props;
 
   const value = data[name];
@@ -14,4 +14,4 @@ export function TextView<T = FormValues>(props: ViewComponentProps<T>) {
       <Text className="text-gray-900 text-base">{displayValue}</Text>
     </View>
   );
-}
+};

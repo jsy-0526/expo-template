@@ -10,7 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import type { SheetProps } from './types';
 
-export function Sheet({
+export const Sheet = ({
   visible = false,
   onClose,
   title,
@@ -25,7 +25,7 @@ export function Sheet({
   closeOnBackdropPress = true,
   presentationStyle = 'pageSheet',
   children
-}: SheetProps) {
+}: SheetProps) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -149,4 +149,4 @@ export function Sheet({
       </SafeAreaView>
     </RNModal>
   );
-}
+};
